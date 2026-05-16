@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LIVEINLDN - Case Study | Suleiman Bello</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=DM+Mono:wght@300;400;500&family=Bebas+Neue&family=Syne:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --black:#080808;
+      --dark:#0f0f0f;
+      --mid:#141414;
+      --red:#e63030;
+      --white:#f5f5f0;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;cursor:none;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--black);font-family:'Syne',sans-serif;overflow-x:hidden;color:var(--white);line-height:1.6;}
+
+    /* ENHANCED CURSOR */
+    .cursor, .cursor-big {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      mix-blend-mode: difference;
+      transition: transform 0.3s cubic-bezier(0.75, 0, 0.25, 1), opacity 0.3s ease;
+    }
+    .cursor {
+      width: 8px;
+      height: 8px;
+      background: #fff;
+      transform: translate(-50%, -50%);
+    }
+    .cursor-big {
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: transparent;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+    }
+    .cursor-hover {
+      transform: translate(-50%, -50%) scale(0.5);
+      opacity: 0.6;
+    }
+    .cursor-big-hover {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.5);
+    }
+    body, a, button { cursor: none !important; }
+
+    /* SCROLL REVEAL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.5, 0, 0, 1), transform 0.8s cubic-bezier(0.5, 0, 0, 1);
+    }
+    .reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* NAVIGATION */
+    nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:24px 48px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(to bottom, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0) 100%);backdrop-filter:blur(8px);}
+    .nav-back{font-family:'DM Mono',monospace;font-size:.58rem;color:#fff;text-decoration:none;letter-spacing:.2em;text-transform:uppercase;opacity:.5;transition:opacity .3s;display:flex;align-items:center;gap:8px;}
+    .nav-back:hover{opacity:1;}
+    .nav-back::before{content:'←';font-size:1rem;}
+    .nav-title{font-family:'DM Mono',monospace;font-size:.58rem;color:rgba(255,255,255,.3);letter-spacing:.2em;text-transform:uppercase;}
+
+    /* HERO SECTION */
+    .cs-hero{
+      position:relative;
+      min-height:90vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:120px 60px 80px;
+      overflow:hidden;
+      background:linear-gradient(135deg, #1a0a1a, #0a0814, #0a1418);
+    }
+    .cs-hero::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background-image:radial-gradient(circle, rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size:20px 20px;
+      opacity:.5;
+    }
+    .cs-hero-content{
+      position:relative;
+      z-index:2;
+      max-width:1200px;
+      text-align:center;
+    }
+    .cs-hero-label{
+      font-family:'DM Mono',monospace;
+      font-size:.6rem;
+      letter-spacing:.35em;
+      color:rgba(255,255,255,.4);
+      text-transform:uppercase;
+      margin-bottom:32px;
+    }
+    .cs-hero-title{
+      font-family:'Syne',sans-serif;
+      font-size:clamp(3rem,8vw,7rem);
+      font-weight:900;
+      line-height:.95;
+      letter-spacing:-.02em;
+      color:#fff;
+      margin-bottom:24px;
+    }
+    .cs-hero-subtitle{
+      font-family:'DM Mono',monospace;
+      font-size:clamp(.9rem,2vw,1.1rem);
+      color:rgba(255,255,255,.6);
+      letter-spacing:.08em;
+      line-height:1.8;
+      max-width:700px;
+      margin:0 auto 48px;
+    }
+    .cs-hero-meta{
+      display:flex;
+      gap:40px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+    .cs-meta-item{
+      text-align:center;
+    }
+    .cs-meta-label{
+      font-family:'DM Mono',monospace;
+      font-size:.52rem;
+      color:rgba(255,255,255,.35);
+      letter-spacing:.25em;
+      text-transform:uppercase;
+      margin-bottom:8px;
+    }
+    .cs-meta-value{
+      font-family:'Syne',sans-serif;
+      font-size:1rem;
+      color:rgba(255,255,255,.85);
+      font-weight:600;
+    }
+
+    /* CONTENT SECTIONS */
+    .cs-section{
+      padding:120px 60px;
+      position:relative;
+    }
+    .cs-section::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background-image:radial-gradient(circle, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size:20px 20px;
+      z-index:0;
+    }
+    .cs-section-content{
+      max-width:1200px;
+      margin:0 auto;
+      position:relative;
+      z-index:1;
+    }
+
+    /* SECTION HEADER */
+    .cs-section-number{
+      font-family:'DM Mono',monospace;
+      font-size:.52rem;
+      color:rgba(255,255,255,.25);
+      letter-spacing:.3em;
+      text-transform:uppercase;
+      margin-bottom:16px;
+    }
+    .cs-section-title{
+      font-family:'Playfair Display',serif;
+      font-size:clamp(2.5rem,6vw,5rem);
+      font-weight:900;
+      color:#fff;
+      margin-bottom:32px;
+      line-height:1.1;
+    }
+    .cs-section-title em{
+      font-style:italic;
+      color:rgba(255,255,255,.5);
+    }
+
+    /* TEXT CONTENT */
+    .cs-text{
+      font-family:'DM Mono',monospace;
+      font-size:.82rem;
+      color:rgba(255,255,255,.55);
+      line-height:2;
+      margin-bottom:24px;
+      max-width:800px;
+    }
+    .cs-text-large{
+      font-size:1rem;
+      color:rgba(255,255,255,.7);
+      line-height:1.9;
+    }
+
+    /* TWO COLUMN LAYOUT */
+    .cs-grid-2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:60px;
+      margin-top:60px;
+    }
+
+    /* THREE COLUMN LAYOUT */
+    .cs-grid-3{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:40px;
+      margin-top:60px;
+    }
+
+    /* IMAGE SHOWCASE */
+    .cs-image{
+      width:100%;
+      max-width:100%;
+      margin:40px 0;
+      border-radius:12px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 30px 60px rgba(0,0,0,0.6), 0 0 40px rgba(255,255,255,.1);
+      position:relative;
+    }
+    .cs-image::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      border-radius:12px;
+      padding:2px;
+      background:linear-gradient(135deg, rgba(255,255,255,.3), rgba(255,255,255,.05), rgba(255,255,255,.3));
+      -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite:xor;
+      mask-composite:exclude;
+      opacity:.6;
+      pointer-events:none;
+      z-index:1;
+    }
+    .cs-image img{
+      width:100%;
+      height:auto;
+      max-height:600px;
+      object-fit:cover;
+      display:block;
+    }
+    .cs-image-caption{
+      font-family:'DM Mono',monospace;
+      font-size:.62rem;
+      color:rgba(255,255,255,.4);
+      text-align:center;
+      margin-top:16px;
+      letter-spacing:.12em;
+    }
+
+    /* FEATURE CARDS */
+    .cs-feature-card{
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      padding:32px;
+      border-radius:8px;
+    }
+    .cs-feature-card h3{
+      font-family:'Syne',sans-serif;
+      font-size:1.2rem;
+      color:#fff;
+      margin-bottom:16px;
+      font-weight:700;
+    }
+
+    /* TECH STACK BADGES */
+    .cs-tech-stack{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:24px;
+    }
+    .cs-tech-badge{
+      background:rgba(230,48,48,.1);
+      border:1px solid rgba(230,48,48,.3);
+      color:rgba(230,48,48,1);
+      padding:8px 16px;
+      border-radius:6px;
+      font-family:'DM Mono',monospace;
+      font-size:.6rem;
+      letter-spacing:.15em;
+      text-transform:uppercase;
+      font-weight:600;
+    }
+
+    /* QUOTE */
+    .cs-quote{
+      background:rgba(230,48,48,.08);
+      border-left:4px solid #e63030;
+      padding:40px 48px;
+      margin:60px 0;
+      border-radius:0 8px 8px 0;
+    }
+    .cs-quote-text{
+      font-family:'Syne',sans-serif;
+      font-size:1.3rem;
+      color:rgba(255,255,255,.85);
+      line-height:1.6;
+      font-weight:600;
+      margin-bottom:16px;
+    }
+    .cs-quote-author{
+      font-family:'DM Mono',monospace;
+      font-size:.64rem;
+      color:rgba(255,255,255,.5);
+      letter-spacing:.2em;
+      text-transform:uppercase;
+    }
+
+    /* NAVIGATION TO NEXT PROJECT */
+    .cs-next{
+      padding:100px 60px;
+      background:linear-gradient(135deg, #180606, #140a00, #0a0606);
+      position:relative;
+      overflow:hidden;
+    }
+    .cs-next::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background-image:radial-gradient(circle, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size:20px 20px;
+    }
+    .cs-next-content{
+      max-width:1200px;
+      margin:0 auto;
+      position:relative;
+      z-index:1;
+    }
+    .cs-next-label{
+      font-family:'DM Mono',monospace;
+      font-size:.58rem;
+      color:rgba(255,255,255,.4);
+      letter-spacing:.3em;
+      text-transform:uppercase;
+      margin-bottom:24px;
+    }
+    .cs-next-title{
+      font-family:'Syne',sans-serif;
+      font-size:clamp(2.5rem,6vw,5rem);
+      font-weight:800;
+      color:#fff;
+      margin-bottom:16px;
+      line-height:1.1;
+    }
+    .cs-next-subtitle{
+      font-family:'DM Mono',monospace;
+      font-size:.8rem;
+      color:rgba(255,255,255,.5);
+      margin-bottom:40px;
+      letter-spacing:.08em;
+    }
+    .cs-next-btn{
+      display:inline-block;
+      background:#fff;
+      color:#080808;
+      padding:16px 32px;
+      border-radius:6px;
+      font-family:'DM Mono',monospace;
+      font-size:.62rem;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      font-weight:600;
+      text-decoration:none;
+      transition:all .3s;
+      box-shadow:0 8px 24px rgba(255,255,255,.15);
+    }
+    .cs-next-btn:hover{
+      background:#e63030;
+      color:#fff;
+      transform:translateY(-4px);
+      box-shadow:0 12px 32px rgba(230,48,48,.4);
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:768px){
+      nav{padding:20px 24px;}
+      .cs-hero{padding:100px 24px 60px;}
+      .cs-section{padding:80px 24px;}
+      .cs-grid-2,.cs-grid-3{grid-template-columns:1fr;}
+      .cs-next{padding:60px 24px;}
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-back">Back to Portfolio</a>
+    <div class="nav-title">Case Study</div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="cs-hero">
+    <div class="cs-hero-content">
+      <div class="cs-hero-label">Full-Stack Development · Logo Design · Academic Project</div>
+      <h1 class="cs-hero-title">LIVEINLDN</h1>
+      <p class="cs-hero-subtitle">Events discovery platform focused on RnB, Afrobeats, and Hip Hop acts in London. Full-stack development from concept to implementation, creating accessible event access for underserved music communities.</p>
+      <div class="cs-hero-meta">
+        <div class="cs-meta-item">
+          <div class="cs-meta-label">Role</div>
+          <div class="cs-meta-value">Full-Stack Developer</div>
+        </div>
+        <div class="cs-meta-item">
+          <div class="cs-meta-label">Type</div>
+          <div class="cs-meta-value">School Project</div>
+        </div>
+        <div class="cs-meta-item">
+          <div class="cs-meta-label">Grade</div>
+          <div class="cs-meta-value">First Class</div>
+        </div>
+        <div class="cs-meta-item">
+          <div class="cs-meta-label">Year</div>
+          <div class="cs-meta-value">2024</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OVERVIEW -->
+  <section class="cs-section">
+    <div class="cs-section-content">
+      <div class="cs-section-number reveal">01 — Overview</div>
+      <h2 class="cs-section-title reveal">Making Events <em>Accessible</em></h2>
+      <p class="cs-text cs-text-large reveal">LIVEINLDN addresses the fragmented landscape of event discovery for RnB, Afrobeats, and Hip Hop communities in London. Built as a full-stack solution with custom API, user authentication, and admin systems.</p>
+      
+      <div class="cs-grid-2">
+        <div class="reveal">
+          <h3 style="font-family:'Syne',sans-serif;font-size:1.2rem;color:#fff;margin-bottom:16px;font-weight:700;">The Problem</h3>
+          <p class="cs-text">Events for RnB, Afrobeats, and Hip Hop acts in London were scattered across multiple platforms, making discovery difficult for both event-goers and organizers. Existing solutions lacked focus on these specific communities and their needs.</p>
+        </div>
+        <div class="reveal">
+          <h3 style="font-family:'Syne',sans-serif;font-size:1.2rem;color:#fff;margin-bottom:16px;font-weight:700;">The Solution</h3>
+          <p class="cs-text">A focused events platform built from scratch with custom backend API, user authentication system, admin dashboard, and streamlined ticket access. Designed specifically for the London music scene with accessibility and user experience as core principles.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOGO DESIGN -->
+  <section class="cs-section" style="background:#0a0a0a;">
+    <div class="cs-section-content">
+      <div class="cs-section-number reveal">02 — Logo Design</div>
+      <h2 class="cs-section-title reveal">Brand <em>Identity</em></h2>
+      <p class="cs-text reveal">Created the complete brand identity for LIVEINLDN, exploring multiple concepts before landing on the final mark. The logo needed to represent London's vibrant music culture while maintaining clarity across digital platforms.</p>
+
+      <div class="cs-grid-2" style="margin-top:50px;">
+        <div class="cs-image reveal" style="margin:10;">
+          <img src="assets/photos/liveinldn-logo-v1.png" alt="LIVEINLDN Logo V1">
+        </div>
+        <div class="cs-image reveal" style="margin:0;">
+          <img src="assets/photos/liveinldn-logo-v2.png" alt="LIVEINLDN Logo V2">
+        </div>
+        <div class="cs-image reveal" style="margin:0;">
+          <img src="assets/photos/liveinldn-logo-v3.png" alt="LIVEINLDN Logo V3">
+        </div>
+        <div class="cs-image reveal" style="margin:0;">
+          <img src="assets/photos/liveinldn-logo-final.png" alt="LIVEINLDN Final Logo">
+        </div>
+      </div>
+      <p class="cs-image-caption">Logo evolution from initial concepts to final mark</p>
+    </div>
+  </section>
+
+  <!-- WIREFRAMES -->
+  <section class="cs-section">
+    <div class="cs-section-content">
+      <div class="cs-section-number reveal">03 — Wireframes</div>
+      <h2 class="cs-section-title reveal">Structure & <em>Planning</em></h2>
+      <p class="cs-text reveal">Wireframing established the information architecture and user flows before moving to high-fidelity design. Focus on intuitive navigation, clear event discovery, and streamlined ticket access.</p>
+
+      <div class="cs-image reveal">
+        <img src="assets/photos/liveinldn-wireframe-1.png" alt="LIVEINLDN Homepage Wireframe">
+      </div>
+      <p class="cs-image-caption">Homepage structure</p>
+
+      <div class="cs-image reveal">
+        <img src="assets/photos/liveinldn-wireframe-2.png" alt="LIVEINLDN Event Discovery Wireframe">
+      </div>
+      <p class="cs-image-caption">Event discovery flow</p>
+
+      <div class="cs-image reveal">
+        <img src="assets/photos/liveinldn-wireframe-3.png" alt="LIVEINLDN Detail Page Wireframe">
+      </div>
+      <p class="cs-image-caption">Detailed page layouts</p>
+
+      <div class="cs-image reveal">
+        <img src="assets/photos/liveinldn-wireframe-4.png" alt="LIVEINLDN Additional Wireframe">
+      </div>
+      <p class="cs-image-caption">Additional wireframes</p>
+    </div>
+  </section>
+
+  <!-- UI/UX DESIGN -->
+  <section class="cs-section" style="background:#0a0a0a;">
+    <div class="cs-section-content">
+      <div class="cs-section-number reveal">04 — UI/UX Design</div>
+      <h2 class="cs-section-title reveal">Visual <em>Design</em></h2>
+      <p class="cs-text reveal">High-fidelity mockups brought the wireframes to life with vibrant colors reflecting London's music scene. The design system prioritized accessibility, clear typography, and intuitive user flows across all touchpoints.</p>
+
+      <div class="cs-grid-2" style="margin-top:60px;">
+        <div class="cs-image reveal" style="margin:0;">
+          <img src="assets/photos/liveinldn-mockup-1.png" alt="LIVEINLDN Mockup 1">
+        </div>
+        <div class="cs-image reveal" style="margin:0;">
+          <img src="assets/photos/liveinldn-mockup-2.png" alt="LIVEINLDN Mockup 2">
+        </div>
+        <div class="cs-image reveal" style="margin:0;">
+          <img src="assets/photos/liveinldn-mockup-3.png" alt="LIVEINLDN Mockup 3">
+        </div>
+        <div class="cs-image reveal" style="margin:0;">
+          <img src="assets/photos/liveinldn-mockup-4.png" alt="LIVEINLDN Mockup 4">
+        </div>
+      </div>
+      <p class="cs-image-caption">UI design mockups</p>
+    </div>
+  </section>
+
+  <!-- IMPLEMENTATION -->
+  <section class="cs-section">
+    <div class="cs-section-content">
+      <div class="cs-section-number reveal">05 — Implementation</div>
+      <h2 class="cs-section-title reveal">Built From <em>Scratch</em></h2>
+      <p class="cs-text reveal">Full-stack development including frontend interface, custom API backend, user authentication system, and admin dashboard. Every line of code written from the ground up as a solo project.</p>
+
+      <div class="cs-image reveal">
+        <img src="assets/photos/liveinldn-site-1.png" alt="LIVEINLDN Homepage Screenshot">
+      </div>
+      <p class="cs-image-caption">Live homepage</p>
+
+      <div class="cs-image reveal">
+        <img src="assets/photos/liveinldn-site-2.png" alt="LIVEINLDN Event Listing Screenshot">
+      </div>
+      <p class="cs-image-caption">Events listing interface</p>
+
+      <div class="cs-image reveal">
+        <img src="assets/photos/liveinldn-site-3.png" alt="LIVEINLDN Event Detail Screenshot">
+      </div>
+      <p class="cs-image-caption">Event details and interaction</p>
+
+      <div class="cs-image reveal">
+        <img src="assets/photos/liveinldn-site-4.png" alt="LIVEINLDN User Dashboard Screenshot">
+      </div>
+      <p class="cs-image-caption">User dashboard</p>
+
+      <div class="cs-image reveal">
+        <img src="assets/photos/liveinldn-site-5.png" alt="LIVEINLDN Admin Dashboard Screenshot">
+      </div>
+      <p class="cs-image-caption">Admin dashboard</p>
+    </div>
+  </section>
+
+  <!-- KEY FEATURES -->
+  <section class="cs-section" style="background:#0a0a0a;">
+    <div class="cs-section-content">
+      <div class="cs-section-number reveal">06 — Key Features</div>
+      <h2 class="cs-section-title reveal">Platform <em>Capabilities</em></h2>
+      
+      <div class="cs-grid-3">
+        <div class="cs-feature-card reveal">
+          <h3>User Authentication</h3>
+          <p class="cs-text">Custom-built user registration and login system. Secure authentication allowing users to create accounts, manage profiles, and access personalized event recommendations.</p>
+        </div>
+        <div class="cs-feature-card reveal">
+          <h3>Admin Dashboard</h3>
+          <p class="cs-text">Comprehensive admin panel for event management. Create, edit, and delete events. Monitor user activity and manage platform content with full administrative control.</p>
+        </div>
+        <div class="cs-feature-card reveal">
+          <h3>Ticket System</h3>
+          <p class="cs-text">Streamlined ticket access and reservation system. Users can browse events and secure tickets. Payment processing was not implemented because this was an academic project.</p>
+        </div>
+      </div>
+
+      <div class="cs-grid-2" style="margin-top:40px;">
+        <div class="cs-feature-card reveal">
+          <h3>Event Discovery</h3>
+          <p class="cs-text">Intuitive search and filtering system focused on RnB, Afrobeats, and Hip Hop events. Browse by date, venue, artist, or genre with clean, accessible interface design.</p>
+        </div>
+        <div class="cs-feature-card reveal">
+          <h3>Responsive Design</h3>
+          <p class="cs-text">User-friendly interface designed for accessibility and ease of use. Clear typography, logical navigation, and thoughtful UX patterns throughout the platform.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TECH STACK -->
+  <section class="cs-section">
+    <div class="cs-section-content">
+      <div class="cs-section-number reveal">07 — Tech Stack</div>
+      <h2 class="cs-section-title reveal">Built <em>With</em></h2>
+      
+      <div class="cs-grid-2">
+        <div class="reveal">
+          <h3 style="font-family:'Syne',sans-serif;font-size:1.4rem;color:#fff;margin-bottom:16px;font-weight:700;">Frontend</h3>
+          <p class="cs-text">Pure HTML, CSS, and JavaScript implementation. No frameworks — built from fundamentals to demonstrate core web development skills and understanding of browser technologies.</p>
+          <div class="cs-tech-stack">
+            <span class="cs-tech-badge">HTML5</span>
+            <span class="cs-tech-badge">CSS3</span>
+            <span class="cs-tech-badge">JavaScript</span>
+            <span class="cs-tech-badge">Responsive Design</span>
+          </div>
+        </div>
+        <div class="reveal">
+          <h3 style="font-family:'Syne',sans-serif;font-size:1.4rem;color:#fff;margin-bottom:16px;font-weight:700;">Backend</h3>
+          <p class="cs-text">Custom API built from scratch to handle event data, user authentication, and admin functionality. Database integration for persistent data storage and retrieval.</p>
+          <div class="cs-tech-stack">
+            <span class="cs-tech-badge">Custom API</span>
+            <span class="cs-tech-badge">Database</span>
+            <span class="cs-tech-badge">User Auth</span>
+            <span class="cs-tech-badge">Admin System</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cs-quote reveal">
+        <p class="cs-quote-text">"Building LIVEINLDN from scratch without frameworks taught me the fundamentals of full-stack development — understanding how authentication, APIs, and database systems work at their core."</p>
+        <p class="cs-quote-author">— Development Reflection</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS & LEARNINGS -->
+  <section class="cs-section" style="background:#0a0a0a;">
+    <div class="cs-section-content">
+      <div class="cs-section-number reveal">08 — Impact</div>
+      <h2 class="cs-section-title reveal">Key <em>Learnings</em></h2>
+      <p class="cs-text cs-text-large reveal">Earned a First Class grade by delivering a complete full-stack application from concept through implementation. This project demonstrated end-to-end product development skills across design, frontend, and backend engineering.</p>
+
+      <h3 style="font-family:'Syne',sans-serif;font-size:1.6rem;color:#fff;margin:60px 0 24px;font-weight:700;" class="reveal">Technical Growth</h3>
+      <p class="cs-text reveal">First experience building a complete full-stack application solo. Learned API design, database architecture, user authentication systems, and admin dashboard development alongside frontend implementation.</p>
+      <p class="cs-text reveal">Working without frameworks forced deep understanding of core web technologies. This foundation makes learning React, Vue, or other frameworks significantly easier as the underlying principles are already solid.</p>
+
+      <h3 style="font-family:'Syne',sans-serif;font-size:1.6rem;color:#fff;margin:60px 0 24px;font-weight:700;" class="reveal">Design Process</h3>
+      <p class="cs-text reveal">Developed systematic approach to UI/UX design: starting with user research and wireframes, iterating through multiple logo concepts, creating high-fidelity mockups, then implementing with code.</p>
+      <p class="cs-text reveal">Accessibility and user experience guided every decision. Designing specifically for RnB, Afrobeats, and Hip Hop communities in London meant understanding the target audience deeply and building for their needs.</p>
+
+      <h3 style="font-family:'Syne',sans-serif;font-size:1.6rem;color:#fff;margin:60px 0 24px;font-weight:700;" class="reveal">Project Management</h3>
+      <p class="cs-text reveal">Solo full-stack development required balancing design work, frontend coding, backend API development, and testing simultaneously. Learned to prioritize features, manage scope, and deliver a complete working product within academic deadlines.</p>
+    </div>
+  </section>
+
+  <!-- NEXT PROJECT -->
+  <section class="cs-next">
+    <div class="cs-next-content">
+      <div class="cs-next-label">Next Project</div>
+      <h2 class="cs-next-title">Brand Design Portfolio</h2>
+      <p class="cs-next-subtitle">Logo Design · Brand Identity · Client Work</p>
+      <a href="case-study-brands.html" class="cs-next-btn">View Case Study</a>
+    </div>
+  </section>
+
+  <div class="cursor"></div>
+  <div class="cursor-big"></div>
+
+  <script src="js/experience.js"></script>
+  <script src="js/scroll-animations.js"></script>
+  <script src="js/parallax.js"></script>
+  <script src="js/page-transitions.js"></script>
+</body>
+</html>

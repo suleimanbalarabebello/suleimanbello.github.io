@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Brand Design - Portfolio | Suleiman Bello</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=DM+Mono:wght@300;400;500&family=Bebas+Neue&family=Syne:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --black:#080808;
+      --dark:#0f0f0f;
+      --mid:#141414;
+      --red:#e63030;
+      --white:#f5f5f0;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;cursor:none;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--black);font-family:'Syne',sans-serif;overflow-x:hidden;color:var(--white);line-height:1.6;}
+
+    /* ENHANCED CURSOR */
+    .cursor, .cursor-big {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      mix-blend-mode: difference;
+      transition: transform 0.3s cubic-bezier(0.75, 0, 0.25, 1), opacity 0.3s ease;
+    }
+    .cursor {
+      width: 8px;
+      height: 8px;
+      background: #fff;
+      transform: translate(-50%, -50%);
+    }
+    .cursor-big {
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: transparent;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+    }
+    body, a, button { cursor: none !important; }
+
+    /* SCROLL REVEAL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.5, 0, 0, 1), transform 0.8s cubic-bezier(0.5, 0, 0, 1);
+    }
+    .reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* NAVIGATION */
+    nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:24px 48px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(to bottom, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0) 100%);backdrop-filter:blur(8px);}
+    .nav-back{font-family:'DM Mono',monospace;font-size:.58rem;color:#fff;text-decoration:none;letter-spacing:.2em;text-transform:uppercase;opacity:.5;transition:opacity .3s;display:flex;align-items:center;gap:8px;}
+    .nav-back:hover{opacity:1;}
+    .nav-back::before{content:'←';font-size:1rem;}
+    .nav-title{font-family:'DM Mono',monospace;font-size:.58rem;color:rgba(255,255,255,.3);letter-spacing:.2em;text-transform:uppercase;}
+
+    /* HERO SECTION */
+    .cs-hero{
+      position:relative;
+      min-height:90vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:120px 60px 80px;
+      overflow:hidden;
+      background:linear-gradient(135deg, #0a0a14, #140a14, #0a1414);
+    }
+    .cs-hero::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background-image:radial-gradient(circle, rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size:20px 20px;
+      opacity:.5;
+    }
+    .cs-hero-content{
+      position:relative;
+      z-index:2;
+      max-width:1200px;
+      text-align:center;
+    }
+    .cs-hero-label{
+      font-family:'DM Mono',monospace;
+      font-size:.6rem;
+      letter-spacing:.35em;
+      color:rgba(255,255,255,.4);
+      text-transform:uppercase;
+      margin-bottom:32px;
+    }
+    .cs-hero-title{
+      font-family:'Syne',sans-serif;
+      font-size:clamp(3rem,8vw,7rem);
+      font-weight:900;
+      line-height:.95;
+      letter-spacing:-.02em;
+      color:#fff;
+      margin-bottom:24px;
+    }
+    .cs-hero-subtitle{
+      font-family:'DM Mono',monospace;
+      font-size:clamp(.9rem,2vw,1.1rem);
+      color:rgba(255,255,255,.6);
+      letter-spacing:.08em;
+      line-height:1.8;
+      max-width:700px;
+      margin:0 auto;
+    }
+
+    /* GALLERY SECTION */
+    .gallery-section{
+      padding:120px 60px;
+      position:relative;
+    }
+    .gallery-section::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background-image:radial-gradient(circle, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size:20px 20px;
+      z-index:0;
+    }
+    .gallery-content{
+      max-width:1400px;
+      margin:0 auto;
+      position:relative;
+      z-index:1;
+    }
+    .gallery-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:40px;
+      margin-top:80px;
+    }
+
+    /* BRAND CARD */
+    .brand-card{
+      position:relative;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:12px;
+      overflow:hidden;
+      transition:all .4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .brand-card:hover{
+      transform:translateY(-8px);
+      border-color:rgba(255,255,255,.2);
+      box-shadow:0 20px 60px rgba(0,0,0,.6);
+    }
+    .brand-card-image{
+      width:100%;
+      aspect-ratio:1/1;
+      background:linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .brand-card-image::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at center, rgba(230,48,48,.1), transparent 70%);
+      opacity:0;
+      transition:opacity .4s;
+      z-index:1;
+      pointer-events:none;
+    }
+    .brand-card:hover .brand-card-image::before{
+      opacity:1;
+    }
+    .brand-card-image img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .brand-card-info{
+      padding:24px;
+    }
+    .brand-card-name{
+      font-family:'Syne',sans-serif;
+      font-size:1.1rem;
+      color:#fff;
+      font-weight:700;
+      margin-bottom:8px;
+    }
+    .brand-card-desc{
+      font-family:'DM Mono',monospace;
+      font-size:.65rem;
+      color:rgba(255,255,255,.4);
+      letter-spacing:.1em;
+      line-height:1.6;
+      margin-bottom:12px;
+    }
+    .brand-card-year{
+      font-family:'DM Mono',monospace;
+      font-size:.58rem;
+      color:rgba(230,48,48,.8);
+      letter-spacing:.15em;
+      text-transform:uppercase;
+    }
+
+    /* COMING SOON SECTION - FIXED */
+    .coming-soon-section{
+    position:relative;
+    min-height:50vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#080808;
+    overflow:hidden;
+    padding:40px 20px;
+    }
+
+    @media(max-width:768px){
+    .coming-soon-section{
+        min-height:40vh;
+        padding:30px 20px;
+    }
+    
+    #trail-canvas{
+        transform:scale(0.7);
+    }
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:1024px){
+      .gallery-grid{grid-template-columns:repeat(2,1fr);}
+    }
+    @media(max-width:768px){
+      nav{padding:20px 24px;}
+      .cs-hero{padding:100px 24px 60px;}
+      .gallery-section{padding:80px 24px;}
+      .gallery-grid{grid-template-columns:1fr;gap:30px;}
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-back">Back to Portfolio</a>
+    <div class="nav-title">Brand Design</div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="cs-hero">
+    <div class="cs-hero-content">
+      <div class="cs-hero-label">Logo Design · Brand Identity · Visual Design</div>
+      <h1 class="cs-hero-title">Brand Design</h1>
+      <p class="cs-hero-subtitle">A collection of logos and brand identities created for clients across various industries. Each mark designed to capture the essence of the brand and communicate its values visually.</p>
+    </div>
+  </section>
+
+  <!-- GALLERY SECTION -->
+  <section class="gallery-section">
+    <div class="gallery-content">
+      
+      <div class="gallery-grid">
+        
+        <!-- BRAND CARD 1 -->
+        <div class="brand-card reveal">
+          <div class="brand-card-image">
+            <img src="assets/photos/brand-1.jpg" alt="Brand Logo 1">
+          </div>
+          <div class="brand-card-info">
+            <h3 class="brand-card-name">BCA PRIVE</h3>
+            <p class="brand-card-desc">Brief description of the brand or industry</p>
+            <div class="brand-card-year">2023</div>
+          </div>
+        </div>
+
+        <!-- BRAND CARD 2 -->
+        <div class="brand-card reveal">
+          <div class="brand-card-image">
+            <img src="assets/photos/brand-2.jpg" alt="Brand Logo 2">
+          </div>
+          <div class="brand-card-info">
+            <h3 class="brand-card-name">BALACANA</h3>
+            <p class="brand-card-desc">Personal shopping and concierge business</p>
+            <div class="brand-card-year">2023</div>
+          </div>
+        </div>
+
+        <!-- BRAND CARD 3 -->
+        <div class="brand-card reveal">
+          <div class="brand-card-image">
+            <img src="assets/photos/brand-3.jpg" alt="Brand Logo 3">
+          </div>
+          <div class="brand-card-info">
+            <h3 class="brand-card-name">+BC4BOYZ</h3>
+            <p class="brand-card-desc">Events company</p>
+            <div class="brand-card-year">2023</div>
+          </div>
+        </div>
+
+        <!-- BRAND CARD 4 -->
+        <div class="brand-card reveal">
+          <div class="brand-card-image">
+            <img src="assets/photos/brand-4.jpg" alt="Brand Logo 4">
+          </div>
+          <div class="brand-card-info">
+            <h3 class="brand-card-name">LUNARSYNC SOLUTIONS</h3>
+            <p class="brand-card-desc">Concept tech solutions company</p>
+            <div class="brand-card-year">2022</div>
+          </div>
+        </div>
+
+        <!-- BRAND CARD 5 -->
+        <div class="brand-card reveal">
+          <div class="brand-card-image">
+            <img src="assets/photos/brand-5.jpg" alt="Brand Logo 5">
+          </div>
+          <div class="brand-card-info">
+            <h3 class="brand-card-name">LIVEINLDN</h3>
+            <p class="brand-card-desc">School project produced with a first class grade</p>
+            <div class="brand-card-year">2025</div>
+          </div>
+        </div>
+
+        <!-- BRAND CARD 6 -->
+        <div class="brand-card reveal">
+          <div class="brand-card-image">
+            <img src="assets/photos/brand-6.jpg" alt="Brand Logo 6">
+          </div>
+          <div class="brand-card-info">
+            <h3 class="brand-card-name">GRTCTRL</h3>
+            <p class="brand-card-desc">Nottingham Based fashion brand</p>
+            <div class="brand-card-year">2025</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- MORE COMING SOON - ANIMATED -->
+  <section class="coming-soon-section">
+    <canvas id="trail-canvas"></canvas>
+  </section>
+
+  <div class="cursor"></div>
+  <div class="cursor-big"></div>
+
+  <script src="js/experience.js"></script>
+  <script src="js/scroll-animations.js"></script>
+  <script src="js/page-transitions.js"></script>
+
+  <script>
+    // SPACESHIP WRITING ANIMATION
+    const canvas = document.getElementById('trail-canvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    // Letter paths
+    const text = "MORE COMING SOON";
+    const startX = canvas.width * 0.1;
+    const startY = canvas.height * 0.5;
+    
+    const pathPoints = [];
+    let currentX = startX;
+    const letterHeight = 80;
+    const letterWidth = 60;
+
+    const letterPaths = {
+      'M': [[0,1], [0,0], [0.5,0.5], [1,0], [1,1]],
+      'O': [[0.5,0], [1,0.3], [1,0.7], [0.5,1], [0,0.7], [0,0.3], [0.5,0]],
+      'R': [[0,1], [0,0], [1,0], [1,0.4], [0,0.5], [1,1]],
+      'E': [[1,0], [0,0], [0,0.5], [0.7,0.5], [0,0.5], [0,1], [1,1]],
+      'C': [[1,0.2], [0.3,0], [0,0.3], [0,0.7], [0.3,1], [1,0.8]],
+      'I': [[0.3,0], [0.7,0], [0.5,0], [0.5,1], [0.3,1], [0.7,1]],
+      'N': [[0,1], [0,0], [1,1], [1,0]],
+      'G': [[1,0.2], [0.3,0], [0,0.3], [0,0.7], [0.3,1], [1,0.8], [1,0.5], [0.5,0.5]],
+      'S': [[1,0.2], [0.3,0], [0,0.2], [0.5,0.5], [1,0.8], [0.7,1], [0,0.8]],
+      ' ': [[0,0.5], [0.3,0.5]]
+    };
+
+    for (let i = 0; i < text.length; i++) {
+      const char = text[i];
+      const charPath = letterPaths[char] || [[0,0.5], [0.5,0.5]];
+      
+      for (let j = 0; j < charPath.length; j++) {
+        const [relX, relY] = charPath[j];
+        pathPoints.push({
+          x: currentX + relX * letterWidth,
+          y: startY + relY * letterHeight - letterHeight / 2
+        });
+      }
+      
+      currentX += letterWidth + (char === ' ' ? letterWidth : 20);
+    }
+
+    const spaceship = {
+      x: pathPoints[0].x,
+      y: pathPoints[0].y,
+      size: 15,
+      trail: [],
+      pathIndex: 0,
+      speed: 2
+    };
+
+    function drawSpaceship() {
+      ctx.save();
+      ctx.translate(spaceship.x, spaceship.y);
+      
+      ctx.shadowBlur = 20;
+      ctx.shadowColor = '#e63030';
+      
+      ctx.fillStyle = '#e63030';
+      ctx.beginPath();
+      ctx.moveTo(spaceship.size, 0);
+      ctx.lineTo(-spaceship.size / 2, -spaceship.size / 2);
+      ctx.lineTo(-spaceship.size / 2, spaceship.size / 2);
+      ctx.closePath();
+      ctx.fill();
+      
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.arc(0, 0, spaceship.size / 3, 0, Math.PI * 2);
+      ctx.fill();
+      
+      ctx.restore();
+    }
+
+    function drawTrail() {
+      ctx.strokeStyle = '#e63030';
+      ctx.lineWidth = 4;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = '#e63030';
+      
+      ctx.beginPath();
+      for (let i = 0; i < spaceship.trail.length; i++) {
+        const point = spaceship.trail[i];
+        if (i === 0) {
+          ctx.moveTo(point.x, point.y);
+        } else {
+          ctx.lineTo(point.x, point.y);
+        }
+      }
+      ctx.stroke();
+      
+      ctx.strokeStyle = 'rgba(230, 48, 48, 0.3)';
+      ctx.lineWidth = 8;
+      ctx.stroke();
+    }
+
+    function animate() {
+      // In the animate function
+        ctx.fillStyle = 'rgba(8, 8, 8, 0.1)';  // BLACK not red!
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      if (spaceship.pathIndex < pathPoints.length - 1) {
+        const target = pathPoints[spaceship.pathIndex + 1];
+        const dx = target.x - spaceship.x;
+        const dy = target.y - spaceship.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        
+        if (dist < spaceship.speed) {
+          spaceship.pathIndex++;
+        } else {
+          spaceship.x += (dx / dist) * spaceship.speed;
+          spaceship.y += (dy / dist) * spaceship.speed;
+        }
+        
+        spaceship.trail.push({ x: spaceship.x, y: spaceship.y });
+        
+        if (spaceship.trail.length > 5000) {
+          spaceship.trail.shift();
+        }
+      }
+      
+      drawTrail();
+      drawSpaceship();
+      
+      requestAnimationFrame(animate);
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animate();
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    observer.observe(document.querySelector('.coming-soon-section'));
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>SB Monogram Favicon</title>
+</head>
+<body style="margin:0;padding:40px;background:#080808;display:flex;justify-content:center;align-items:center;min-height:100vh;flex-direction:column;gap:20px;">
+  
+  <canvas id="favicon" width="512" height="512" style="border:1px solid #333;"></canvas>
+  <button onclick="download()" style="background:#e63030;color:#fff;border:none;padding:16px 32px;font-size:14px;cursor:pointer;border-radius:6px;font-family:monospace;letter-spacing:0.1em;">DOWNLOAD FAVICON</button>
+
+  <script>
+    const canvas = document.getElementById('favicon');
+    const ctx = canvas.getContext('2d');
+    const size = 512;
+    const center = size / 2;
+
+    // Background
+    ctx.fillStyle = '#080808';
+    ctx.fillRect(0, 0, size, size);
+
+    // Outer circle border (luxury brand style)
+    ctx.strokeStyle = '#d4d4d4';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(center, center, 220, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Inner circle
+    ctx.strokeStyle = '#d4d4d4';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(center, center, 210, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Monogram background circle (subtle)
+    ctx.fillStyle = '#0f0f0f';
+    ctx.beginPath();
+    ctx.arc(center, center, 180, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Main initials - elegant serif
+    ctx.fillStyle = '#d4d4d4';
+    ctx.font = 'bold 220px "Times New Roman", serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    
+    // Subtle shadow for depth
+    ctx.shadowColor = 'rgba(212, 212, 212, 0.3)';
+    ctx.shadowBlur = 20;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
+    
+    // Draw S and B as monogram
+    ctx.fillText('SB', center, center + 10);
+
+    // Reset shadow
+    ctx.shadowBlur = 0;
+
+    // Small decorative elements (corner accents)
+    ctx.strokeStyle = '#d4d4d4';
+    ctx.lineWidth = 2;
+    
+    // Top accent
+    ctx.beginPath();
+    ctx.moveTo(center - 15, 60);
+    ctx.lineTo(center, 45);
+    ctx.lineTo(center + 15, 60);
+    ctx.stroke();
+
+    // Bottom accent  
+    ctx.beginPath();
+    ctx.moveTo(center - 15, size - 60);
+    ctx.lineTo(center, size - 45);
+    ctx.lineTo(center + 15, size - 60);
+    ctx.stroke();
+
+    // EST text (small, refined)
+    ctx.fillStyle = '#d4d4d4';
+    ctx.font = '16px "Times New Roman", serif';
+    ctx.letterSpacing = '3px';
+    ctx.fillText('EST', center, size - 100);
+    
+    ctx.font = 'bold 20px "Times New Roman", serif';
+    ctx.fillText('2006', center, size - 75);
+
+    function download() {
+      const link = document.createElement('a');
+      link.download = 'favicon.png';
+      link.href = canvas.toDataURL();
+      link.click();
+      
+      alert('Favicon downloaded! Convert to ICO at favicon.io or use PNG directly.');
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GRTCTRL - Case Study | Suleiman Bello</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=DM+Mono:wght@300;400;500&family=Bebas+Neue&family=Syne:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --black:#080808;
+      --dark:#0f0f0f;
+      --mid:#141414;
+      --red:#e63030;
+      --white:#f5f5f0;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;cursor:none;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--black);font-family:'Syne',sans-serif;overflow-x:hidden;color:var(--white);line-height:1.6;}
+
+    /* ENHANCED CURSOR */
+    .cursor, .cursor-big {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      mix-blend-mode: difference;
+      transition: transform 0.3s cubic-bezier(0.75, 0, 0.25, 1), opacity 0.3s ease;
+    }
+    .cursor {
+      width: 8px;
+      height: 8px;
+      background: #fff;
+      transform: translate(-50%, -50%);
+    }
+    .cursor-big {
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: transparent;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+    }
+    .cursor-hover {
+      transform: translate(-50%, -50%) scale(0.5);
+      opacity: 0.6;
+    }
+    .cursor-big-hover {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.5);
+    }
+    .cursor-trail-dot {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99998;
+      transform: translate(-50%, -50%);
+      animation: trailFade 0.8s ease-out forwards;
+    }
+    @keyframes trailFade {
+      0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+    }
+    body, a, button { cursor: none !important; }
+
+    /* SCROLL REVEAL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.5, 0, 0, 1), transform 0.8s cubic-bezier(0.5, 0, 0, 1);
+    }
+    .reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal:nth-child(1) { transition-delay: 0s; }
+    .reveal:nth-child(2) { transition-delay: 0.1s; }
+    .reveal:nth-child(3) { transition-delay: 0.15s; }
+    .reveal:nth-child(4) { transition-delay: 0.2s; }
+    .reveal:nth-child(5) { transition-delay: 0.25s; }
+
+    /* NAVIGATION */
+    nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:24px 48px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(to bottom, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0) 100%);backdrop-filter:blur(8px);}
+    .nav-back{font-family:'DM Mono',monospace;font-size:.58rem;color:#fff;text-decoration:none;letter-spacing:.2em;text-transform:uppercase;opacity:.5;transition:opacity .3s;display:flex;align-items:center;gap:8px;}
+    .nav-back:hover{opacity:1;}
+    .nav-back::before{content:'←';font-size:1rem;}
+    .nav-title{font-family:'DM Mono',monospace;font-size:.58rem;color:rgba(255,255,255,.3);letter-spacing:.2em;text-transform:uppercase;}
+
+    /* HERO SECTION */
+    .cs-hero{
+      position:relative;
+      min-height:90vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:120px 60px 80px;
+      overflow:hidden;
+      background:linear-gradient(135deg, #180e00, #0a0800, #1a0400);
+    }
+    .cs-hero::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background-image:radial-gradient(circle, rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size:20px 20px;
+      opacity:.5;
+    }
+    .cs-hero-content{
+      position:relative;
+      z-index:2;
+      max-width:1200px;
+      text-align:center;
+    }
+    .cs-hero-label{
+      font-family:'DM Mono',monospace;
+      font-size:.6rem;
+      letter-spacing:.35em;
+      color:rgba(255,255,255,.4);
+      text-transform:uppercase;
+      margin-bottom:32px;
+    }
+    .cs-hero-title{
+      font-family:'Syne',sans-serif;
+      font-size:clamp(3rem,8vw,7rem);
+      font-weight:900;
+      line-height:.95;
+      letter-spacing:-.02em;
+      color:#fff;
+      margin-bottom:24px;
+    }
+    .cs-hero-subtitle{
+      font-family:'DM Mono',monospace;
+      font-size:clamp(.9rem,2vw,1.1rem);
+      color:rgba(255,255,255,.6);
+      letter-spacing:.08em;
+      line-height:1.8;
+      max-width:700px;
+      margin:0 auto 48px;
+    }
+    .cs-hero-meta{
+      display:flex;
+      gap:40px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+    .cs-meta-item{
+      text-align:center;
+    }
+    .cs-meta-label{
+      font-family:'DM Mono',monospace;
+      font-size:.52rem;
+      color:rgba(255,255,255,.35);
+      letter-spacing:.25em;
+      text-transform:uppercase;
+      margin-bottom:8px;
+    }
+    .cs-meta-value{
+      font-family:'Syne',sans-serif;
+      font-size:1rem;
+      color:rgba(255,255,255,.85);
+      font-weight:600;
+    }
+
+    /* CONTENT SECTIONS */
+    .cs-section{
+      padding:120px 60px;
+      position:relative;
+    }
+    .cs-section::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background-image:radial-gradient(circle, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size:20px 20px;
+      z-index:0;
+    }
+    .cs-section-content{
+      max-width:1200px;
+      margin:0 auto;
+      position:relative;
+      z-index:1;
+    }
+
+    /* SECTION HEADER */
+    .cs-section-number{
+      font-family:'DM Mono',monospace;
+      font-size:.52rem;
+      color:rgba(255,255,255,.25);
+      letter-spacing:.3em;
+      text-transform:uppercase;
+      margin-bottom:16px;
+    }
+    .cs-section-title{
+      font-family:'Playfair Display',serif;
+      font-size:clamp(2.5rem,6vw,5rem);
+      font-weight:900;
+      color:#fff;
+      margin-bottom:32px;
+      line-height:1.1;
+    }
+    .cs-section-title em{
+      font-style:italic;
+      color:rgba(255,255,255,.5);
+    }
+
+    /* TEXT CONTENT */
+    .cs-text{
+      font-family:'DM Mono',monospace;
+      font-size:.82rem;
+      color:rgba(255,255,255,.55);
+      line-height:2;
+      margin-bottom:24px;
+      max-width:800px;
+    }
+    .cs-text-large{
+      font-size:1rem;
+      color:rgba(255,255,255,.7);
+      line-height:1.9;
+    }
+
+    /* TWO COLUMN LAYOUT */
+    .cs-grid-2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:60px;
+      margin-top:60px;
+    }
+
+    /* STAT CARDS */
+    .cs-stats{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:24px;
+      margin-top:60px;
+    }
+    .cs-stat{
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      padding:32px 24px;
+      border-radius:8px;
+      text-align:center;
+    }
+    .cs-stat-number{
+      font-family:'Syne',sans-serif;
+      font-size:2.5rem;
+      font-weight:800;
+      color:#e63030;
+      margin-bottom:8px;
+    }
+    .cs-stat-label{
+      font-family:'DM Mono',monospace;
+      font-size:.6rem;
+      color:rgba(255,255,255,.5);
+      letter-spacing:.2em;
+      text-transform:uppercase;
+    }
+
+    /* IMAGE SHOWCASE */
+    .cs-image{
+      width:100%;
+      max-width:100%;
+      margin:60px 0;
+      border-radius:12px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 30px 60px rgba(0,0,0,0.6), 0 0 40px rgba(255,255,255,.1);
+      position:relative;
+    }
+    .cs-image::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      border-radius:12px;
+      padding:2px;
+      background:linear-gradient(135deg, rgba(255,255,255,.3), rgba(255,255,255,.05), rgba(255,255,255,.3));
+      -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite:xor;
+      mask-composite:exclude;
+      opacity:.6;
+      pointer-events:none;
+      z-index:1;
+    }
+    .cs-image img{
+      width:100%;
+      height:auto;
+      max-height:600px;
+      object-fit:cover;
+      display:block;
+    }
+    .cs-image-caption{
+      font-family:'DM Mono',monospace;
+      font-size:.62rem;
+      color:rgba(255,255,255,.4);
+      text-align:center;
+      margin-top:16px;
+      letter-spacing:.12em;
+    }
+
+    /* VIDEO PLAYER */
+    .cs-video{
+      width:100%;
+      margin:60px 0;
+      border-radius:12px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 30px 60px rgba(0,0,0,0.6), 0 0 40px rgba(255,255,255,.1);
+      position:relative;
+    }
+    .cs-video::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      border-radius:12px;
+      padding:2px;
+      background:linear-gradient(135deg, rgba(255,255,255,.3), rgba(255,255,255,.05), rgba(255,255,255,.3));
+      -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite:xor;
+      mask-composite:exclude;
+      opacity:.6;
+      pointer-events:none;
+      z-index:1;
+    }
+    .cs-video video{
+      width:100%;
+      display:block;
+      max-height:600px;
+      object-fit:cover;
+    }
+
+    /* IMAGE GRID */
+    .cs-image-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:20px;
+      margin:60px 0;
+    }
+
+    /* WEBSITE LINK BUTTON */
+    .cs-website-link{
+      display:inline-block;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.15);
+      color:#fff;
+      padding:16px 32px;
+      border-radius:6px;
+      font-family:'DM Mono',monospace;
+      font-size:.62rem;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      font-weight:600;
+      text-decoration:none;
+      transition:all .3s;
+      margin-top:30px;
+    }
+    .cs-website-link:hover{
+      background:rgba(255,255,255,.15);
+      border-color:rgba(255,255,255,.3);
+      transform:translateY(-2px);
+      box-shadow:0 8px 24px rgba(255,255,255,.1);
+    }
+    .cs-website-link::after{
+      content:'→';
+      margin-left:12px;
+      font-size:1rem;
+    }
+
+    /* QUOTE */
+    .cs-quote{
+      background:rgba(230,48,48,.08);
+      border-left:4px solid #e63030;
+      padding:40px 48px;
+      margin:60px 0;
+      border-radius:0 8px 8px 0;
+    }
+    .cs-quote-text{
+      font-family:'Syne',sans-serif;
+      font-size:1.3rem;
+      color:rgba(255,255,255,.85);
+      line-height:1.6;
+      font-weight:600;
+      margin-bottom:16px;
+    }
+    .cs-quote-author{
+      font-family:'DM Mono',monospace;
+      font-size:.64rem;
+      color:rgba(255,255,255,.5);
+      letter-spacing:.2em;
+      text-transform:uppercase;
+    }
+
+    /* NAVIGATION TO NEXT PROJECT */
+    .cs-next{
+      padding:100px 60px;
+      background:linear-gradient(135deg, #060618, #000e28, #061808);
+      position:relative;
+      overflow:hidden;
+    }
+    .cs-next::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background-image:radial-gradient(circle, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size:20px 20px;
+    }
+    .cs-next-content{
+      max-width:1200px;
+      margin:0 auto;
+      position:relative;
+      z-index:1;
+    }
+    .cs-next-label{
+      font-family:'DM Mono',monospace;
+      font-size:.58rem;
+      color:rgba(255,255,255,.4);
+      letter-spacing:.3em;
+      text-transform:uppercase;
+      margin-bottom:24px;
+    }
+    .cs-next-title{
+      font-family:'Syne',sans-serif;
+      font-size:clamp(2.5rem,6vw,5rem);
+      font-weight:800;
+      color:#fff;
+      margin-bottom:16px;
+      line-height:1.1;
+    }
+    .cs-next-subtitle{
+      font-family:'DM Mono',monospace;
+      font-size:.8rem;
+      color:rgba(255,255,255,.5);
+      margin-bottom:40px;
+      letter-spacing:.08em;
+    }
+    .cs-next-btn{
+      display:inline-block;
+      background:#fff;
+      color:#080808;
+      padding:16px 32px;
+      border-radius:6px;
+      font-family:'DM Mono',monospace;
+      font-size:.62rem;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      font-weight:600;
+      text-decoration:none;
+      transition:all .3s;
+      box-shadow:0 8px 24px rgba(255,255,255,.15);
+    }
+    .cs-next-btn:hover{
+      background:#e63030;
+      color:#fff;
+      transform:translateY(-4px);
+      box-shadow:0 12px 32px rgba(230,48,48,.4);
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:768px){
+      nav{padding:20px 24px;}
+      .cs-hero{padding:100px 24px 60px;}
+      .cs-section{padding:80px 24px;}
+      .cs-grid-2,.cs-stats,.cs-image-grid{grid-template-columns:1fr;}
+      .cs-next{padding:60px 24px;}
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-back">Back to Portfolio</a>
+    <div class="nav-title">Case Study</div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="cs-hero">
+    <div class="cs-hero-content">
+      <div class="cs-hero-label">Brand Identity · Creative Direction · Fashion</div>
+      <h1 class="cs-hero-title">GRTCTRL</h1>
+      <p class="cs-hero-subtitle">Complete brand identity and creative direction for an independent fashion brand. 200+ assets spanning logo design, photography, videography, marketing, and digital platforms.</p>
+      <div class="cs-hero-meta">
+        <div class="cs-meta-item">
+          <div class="cs-meta-label">Role</div>
+          <div class="cs-meta-value">Creative Director</div>
+        </div>
+        <div class="cs-meta-item">
+          <div class="cs-meta-label">Assets</div>
+          <div class="cs-meta-value">200+</div>
+        </div>
+        <div class="cs-meta-item">
+          <div class="cs-meta-label">Timeline</div>
+          <div class="cs-meta-value">Ongoing</div>
+        </div>
+        <div class="cs-meta-item">
+          <div class="cs-meta-label">Year</div>
+          <div class="cs-meta-value">2024</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OVERVIEW -->
+  <section class="cs-section">
+    <div class="cs-section-content">
+      <div class="cs-section-number reveal">01 — Overview</div>
+      <h2 class="cs-section-title reveal">Building a <em>Fashion Empire</em></h2>
+      <p class="cs-text cs-text-large reveal">GRTCTRL is an independent fashion brand where I serve as Creative Director, overseeing all visual identity, brand strategy, and creative output from initial concept through production and distribution.</p>
+      
+      <div class="cs-grid-2">
+        <div class= >
+          <h3 style="font-family:'Syne',sans-serif;font-size:1.2rem;color:#fff;margin-bottom:16px;font-weight:700;">The Challenge</h3>
+          <p class="cs-text">Build a complete fashion brand from the ground up with limited resources while maintaining professional quality across all touchpoints. Create a distinctive visual identity that stands out in a saturated market and resonates with the target audience.</p>
+        </div>
+        <div class= >
+          <h3 style="font-family:'Syne',sans-serif;font-size:1.2rem;color:#fff;margin-bottom:16px;font-weight:700;">The Approach</h3>
+          <p class="cs-text">Develop a cohesive brand language rooted in luxury heritage aesthetics. Balance bold baroque design with modern fashion sensibilities. Execute end-to-end creative production across photography, video, design, and digital platforms.</p>
+        </div>
+      </div>
+
+      <div class="cs-stats">
+        <div class="cs-stat reveal">
+          <div class="cs-stat-number" data-target="200+">0</div>
+          <div class="cs-stat-label">Total Assets</div>
+        </div>
+        <div class="cs-stat reveal">
+          <div class="cs-stat-number" data-target="15+">0</div>
+          <div class="cs-stat-label">Video Projects</div>
+        </div>
+        <div class="cs-stat reveal">
+          <div class="cs-stat-number" data-target="50+">0</div>
+          <div class="cs-stat-label">Photo Shoots</div>
+        </div>
+        <div class="cs-stat reveal">
+          <div class="cs-stat-number" data-target="100%">0%</div>
+          <div class="cs-stat-label">In-House Production</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BRAND IDENTITY -->
+  <section class="cs-section" style="background:#0a0a0a;">
+    <div class="cs-section-content">
+      <div class="cs-section-number reveal">02 — Brand Identity</div>
+      <h2 class="cs-section-title reveal">The <em>Crest</em></h2>
+      <p class="cs-text reveal">The GRTCTRL visual identity draws from baroque and rococo aesthetics, creating a luxury fashion brand rooted in ornate classical imagery. The evolution from the original Horizon wordmark to the final crest logo marked a strategic shift toward heritage luxury positioning.</p>
+      
+      <p class="cs-text reveal">The crest features intricate scrollwork, angelic figures, and royal crown motifs—establishing a visual language that communicates craftsmanship, exclusivity, and timeless elegance. The ornate detailing translates across applications from embroidered apparel to large-scale marketing, maintaining recognizability at any scale.</p>
+
+      <div class="cs-image reveal">
+        <img src="assets/photos/grtctrl-crest.jpg" alt="GRTCTRL Baroque Crest">
+      </div>
+      <p class="cs-image-caption">Final crest design featuring baroque ornamental elements</p>
+
+      <h3 style="font-family:'Syne',sans-serif;font-size:1.6rem;color:#fff;margin:60px 0 24px;font-weight:700;" class="reveal">Logo Evolution</h3>
+      <p class="cs-text reveal">The brand identity began with a clean Horizon-font wordmark before evolving into the ornate crest system. This transition elevated the brand's market positioning, creating immediate visual impact that differentiates GRTCTRL in the independent fashion space.</p>
+
+      <div class="cs-image reveal">
+        <img src="assets/photos/grtctrl-logo-evolution.jpg" alt="Logo Evolution">
+      </div>
+      <p class="cs-image-caption">Brand evolution from minimal wordmark to heritage crest</p>
+
+      <div class="cs-quote reveal">
+        <p class="cs-quote-text">"The shift from minimal wordmark to baroque crest elevated the brand's positioning, creating immediate visual impact that communicates luxury and heritage."</p>
+        <p class="cs-quote-author">— Creative Direction Decision</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESIGN SYSTEM -->
+  <section class="cs-section">
+    <div class="cs-section-content">
+      <div class="cs-section-number reveal">03 — Design System</div>
+      <h2 class="cs-section-title reveal">Visual <em>Foundation</em></h2>
+      
+      <div class="cs-grid-2">
+        <div class="reveal">
+          <h3 style="font-family:'Syne',sans-serif;font-size:1.4rem;color:#fff;margin-bottom:16px;font-weight:700;">Color Palette</h3>
+          <p class="cs-text">Monochromatic foundation in black, white, and grey creates versatile application across materials. The high-contrast palette works for screen printing, embroidery, digital platforms, and packaging. Silver and metallic accents enhance the luxury positioning when appropriate for premium product lines.</p>
+        </div>
+        <div class="reveal">
+          <h3 style="font-family:'Syne',sans-serif;font-size:1.4rem;color:#fff;margin-bottom:16px;font-weight:700;">Typography</h3>
+          <p class="cs-text">Originally built on Horizon font for the wordmark before transitioning to the crest-based system. The ornamental logo serves as the primary brand mark, with supporting typography kept clean and minimal to balance the elaborate central motif.</p>
+        </div>
+      </div>
+
+      <div class="cs-grid-2" style="margin-top:40px;">
+        <div class="reveal">
+          <h3 style="font-family:'Syne',sans-serif;font-size:1.4rem;color:#fff;margin-bottom:16px;font-weight:700;">Applications</h3>
+          <p class="cs-text">The identity system scales seamlessly across all brand touchpoints: woven labels and swing tags, apparel prints and embroidery, packaging and mailers, website and social media, marketing materials and event installations. Every application maintains consistent brand recognition.</p>
+        </div>
+        <div class="reveal">
+          <h3 style="font-family:'Syne',sans-serif;font-size:1.4rem;color:#fff;margin-bottom:16px;font-weight:700;">Brand Guidelines</h3>
+          <p class="cs-text">Comprehensive usage guidelines ensure consistency across 200+ assets. Documentation covers logo placement, minimum sizes, clear space requirements, color specifications, and application do's and don'ts for maintaining brand integrity.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHOTOGRAPHY -->
+  <section class="cs-section" style="background:#0a0a0a;">
+    <div class="cs-section-content">
+      <div class="cs-section-number reveal">04 — Photography</div>
+      <h2 class="cs-section-title reveal">Visual <em>Storytelling</em></h2>
+      <p class="cs-text reveal">Directed and executed 50+ photo shoots spanning product photography, lifestyle imagery, campaign visuals, and behind-the-scenes content. Developed a consistent visual style that defines the brand's aesthetic across all photographic work.</p>
+
+      <div class="cs-image reveal">
+        <img src="assets/photos/grtctrl-product.jpg" alt="Product Photography">
+      </div>
+      <p class="cs-image-caption">Product photography for e-commerce and marketing</p>
+
+      <div class="cs-image reveal">
+        <img src="assets/photos/grtctrl-lifestyle.jpg" alt="Lifestyle Photography">
+      </div>
+      <p class="cs-image-caption">Lifestyle imagery showcasing brand aesthetic</p>
+
+      <div class="cs-image reveal">
+        <img src="assets/photos/grtctrl-campaign.jpg" alt="Campaign Photography">
+      </div>
+      <p class="cs-image-caption">Campaign photography and editorial content</p>
+
+      <h3 style="font-family:'Syne',sans-serif;font-size:1.6rem;color:#fff;margin:60px 0 24px;font-weight:700;" class="reveal">Photography Scope</h3>
+      <p class="cs-text reveal">• Product photography for e-commerce and marketing materials</p>
+      <p class="cs-text reveal">• Lifestyle imagery showcasing brand aesthetic and target audience</p>
+      <p class="cs-text reveal">• Campaign visuals and editorial-style fashion photography</p>
+      <p class="cs-text reveal">• Behind-the-scenes documentation of shoots and creative process</p>
+      <p class="cs-text reveal">• Social media content optimized for Instagram, TikTok, and other platforms</p>
+    </div>
+  </section>
+
+  <!-- VIDEO CONTENT -->
+  <section class="cs-section">
+    <div class="cs-section-content">
+      <div class="cs-section-number reveal">05 — Video Content</div>
+      <h2 class="cs-section-title reveal">Motion & <em>Campaigns</em></h2>
+      <p class="cs-text reveal">Produced 15+ video projects including campaign films, promotional content, behind-the-scenes footage, and social media video content. Video serves as a key brand touchpoint for storytelling and audience engagement.</p>
+
+      <div class="cs-video reveal">
+        <video autoplay loop muted playsinline>
+          <source src="assets/photos/grtctrl-campaign-video.mp4" type="video/mp4">
+        </video>
+      </div>
+      <p class="cs-image-caption">Campaign video and promotional content</p>
+
+      <div class="cs-video reveal">
+      <iframe 
+        src="https://www.youtube.com/embed/CXwwrb2Jbak?autoplay=1&mute=1&loop=1&playlist=CXwwrb2Jbak&controls=0&modestbranding=1&rel=0" 
+        frameborder="0" 
+        allow="autoplay; encrypted-media" 
+        allowfullscreen
+        style="width:100%; height:100%; position:absolute; top:0; left:0;">
+        </iframe>
+      </div>
+      <p class="cs-image-caption">Behind-the-scenes and production content</p>
+
+      <h3 style="font-family:'Syne',sans-serif;font-size:1.6rem;color:#fff;margin:60px 0 24px;font-weight:700;" class="reveal">Video Production</h3>
+      <p class="cs-text reveal">• Campaign films showcasing seasonal collections and brand narrative</p>
+      <p class="cs-text reveal">• Promotional videos for product launches and marketing campaigns</p>
+      <p class="cs-text reveal">• Behind-the-scenes content documenting creative process</p>
+      <p class="cs-text reveal">• Social media video optimized for Instagram Reels, TikTok, and YouTube</p>
+      <p class="cs-text reveal">• Event coverage and brand experience documentation</p>
+    </div>
+  </section>
+
+  <!-- DIGITAL PRESENCE -->
+  <section class="cs-section" style="background:#0a0a0a;">
+    <div class="cs-section-content">
+      <div class="cs-section-number reveal">06 — Digital Presence</div>
+      <h2 class="cs-section-title reveal">Website & <em>Platforms</em></h2>
+      <p class="cs-text reveal">Built and maintain the brand's e-commerce website, ensuring seamless user experience and visual consistency across all digital touchpoints. Manage comprehensive social media strategy and content execution.</p>
+
+      <div class="cs-image reveal">
+        <img src="assets/photos/grtctrl-website-home.jpg" alt="Website Homepage">
+      </div>
+      <p class="cs-image-caption">E-commerce platform homepage</p>
+
+      <div class="cs-image-grid">
+        <div class="cs-image reveal">
+          <img src="assets/photos/grtctrl-product-page.jpg" alt="Product Page">
+        </div>
+        <div class="cs-video reveal">
+          <video autoplay loop muted playsinline>
+            <source src="assets/photos/grtctrl-mobile.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+
+      <div class="cs-grid-2" style="margin-top:60px;">
+        <div class="reveal">
+          <h3 style="font-family:'Syne',sans-serif;font-size:1.4rem;color:#fff;margin-bottom:16px;font-weight:700;">E-Commerce Platform</h3>
+          <p class="cs-text">Custom-designed responsive website with integrated content management and e-commerce functionality. Optimized for conversion while maintaining brand aesthetic. Features product galleries, secure checkout, and customer accounts.</p>
+        </div>
+        <div class="reveal">
+          <h3 style="font-family:'Syne',sans-serif;font-size:1.4rem;color:#fff;margin-bottom:16px;font-weight:700;">Social Strategy</h3>
+          <p class="cs-text">Comprehensive social media presence across Instagram, TikTok, and other platforms. Consistent visual identity and brand voice throughout all digital communications. Daily content creation and community management.</p>
+        </div>
+      </div>
+
+      <a href="https://grtctrl.com" target="_blank" class="cs-website-link reveal">Visit GRTCTRL Website</a>
+    </div>
+  </section>
+
+  <!-- RESULTS & IMPACT -->
+  <section class="cs-section">
+    <div class="cs-section-content">
+      <div class="cs-section-number reveal">07 — Impact</div>
+      <h2 class="cs-section-title reveal">Key <em>Learnings</em></h2>
+      <p class="cs-text cs-text-large reveal">Leading GRTCTRL developed end-to-end creative project management skills, teaching me to balance creative vision with practical business constraints while maintaining quality at scale.</p>
+
+      <div class="cs-quote reveal">
+        <p class="cs-quote-text">"Building a fashion brand from scratch taught me that great design isn't just about aesthetics—it's about creating a cohesive system that works across every touchpoint while telling a compelling story."</p>
+        <p class="cs-quote-author">— Personal Reflection</p>
+      </div>
+
+      <h3 style="font-family:'Syne',sans-serif;font-size:1.6rem;color:#fff;margin:60px 0 24px;font-weight:700;" class="reveal">Takeaways</h3>
+      <p class="cs-text reveal">The experience reinforced the importance of building systematic design processes and documentation. Creating reusable templates and asset libraries proved essential for maintaining consistency while producing large volumes of content across multiple mediums.</p>
+      <p class="cs-text reveal">Working across brand identity, photography, video, and digital platforms demonstrated the value of cross-disciplinary skills in modern creative work. The ability to execute across these areas enables faster iteration and stronger creative vision.</p>
+      <p class="cs-text reveal">Managing 200+ assets taught me to think systematically about brand architecture, file organization, and workflow optimization—skills that translate directly to professional creative and design roles.</p>
+    </div>
+  </section>
+
+  <!-- NEXT PROJECT -->
+  <section class="cs-next">
+    <div class="cs-next-content">
+      <div class="cs-next-label">Next Project</div>
+      <h2 class="cs-next-title">Fast Lane Consultancy</h2>
+      <p class="cs-next-subtitle">UI/UX Design · Team Lead · First Class</p>
+      <a href="case-study-fastlane.html" class="cs-next-btn">View Case Study</a>
+    </div>
+  </section>
+
+  <div class="cursor"></div>
+  <div class="cursor-big"></div>
+
+  <script>
+    // Animated counter for stats
+    function animateCounter(el){
+      const target = el.getAttribute('data-target');
+      const duration = 2000;
+      
+      const isPercentage = target.includes('%');
+      const numericTarget = parseInt(target.replace(/[^0-9]/g, ''));
+      const hasPlus = target.includes('+');
+      
+      const increment = numericTarget / (duration / 16);
+      let current = 0;
+      
+      const timer = setInterval(()=>{
+        current += increment;
+        if(current >= numericTarget){
+          current = numericTarget;
+          clearInterval(timer);
+        }
+        
+        const displayValue = Math.floor(current);
+        if(isPercentage){
+          el.textContent = displayValue + '%';
+        } else if(hasPlus){
+          el.textContent = displayValue + '+';
+        } else {
+          el.textContent = displayValue;
+        }
+      }, 16);
+    }
+
+    const observerOptions = {
+      threshold: 0.5,
+      rootMargin: '0px'
+    };
+
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting && !entry.target.classList.contains('animated')){
+          entry.target.classList.add('animated');
+          const statNumber = entry.target.querySelector('.cs-stat-number');
+          if(statNumber){
+            animateCounter(statNumber);
+          }
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.cs-stat').forEach(stat=>{
+      observer.observe(stat);
+    });
+  </script>
+
+  <script src="js/experience.js"></script>
+  <script src="js/scroll-animations.js"></script>
+  <script src="js/parallax.js"></script>
+  <script src="js/page-transitions.js"></script>
+
+</body>
+</html>
